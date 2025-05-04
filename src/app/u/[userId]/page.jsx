@@ -35,10 +35,9 @@ const page = ({ params }) => {
     reader.readAsDataURL(imageFile);
     reader.onload = () =>{
       // console.log(reader.result);
-      setImage(reader.result)
+      setImage(reader.result);
     };
   }, [watchImageChanged])
-  // console.log(image);
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

@@ -6,7 +6,7 @@ export const POST = async(request) =>{
     try {
         await connectDb();
         const newPost = await request.json();
-        console.log(newPost)
+        // console.log(newPost);
         await Post.create(newPost);
         return NextResponse.json({message: "Posted Successfully"}, {status: 200});
     } catch (error) {

@@ -26,7 +26,7 @@ const AuthContextProvider = ({children}) => {
         const usSubscribe = onAuthStateChanged(auth, (currentUser) =>{
             setLoading(false);
             setUser(currentUser);
-            console.log(currentUser);
+            // console.log(currentUser);
         })
         return () =>{
             return usSubscribe();

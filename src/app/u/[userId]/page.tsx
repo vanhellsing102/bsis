@@ -1,9 +1,10 @@
-import React from 'react';
 
-const page = () => {
+
+const page = ({params}) => {
+    const {userId} = params;
     return (
         <div>
-            userId
+            
         </div>
     );
 };

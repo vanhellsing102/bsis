@@ -1,11 +1,20 @@
-import React from 'react';
+"use client"
+import { getAuthContext } from "@/AuthContext/AuthContextProvider";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 
-const page = () => {
+const Page = () => {
+    const {user} = getAuthContext();
+    if(user){
+        redirect(`/u/${user?.uid}`);
+    }
+    // console.log(user);
+
     return (
         <div>
-            profile
+            <Link href={'/login'}>Login</Link>
         </div>
     );
 };
 
-export default page;
+export default Page;

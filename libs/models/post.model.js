@@ -20,7 +20,29 @@ const PostSchema = new mongoose.Schema({
     location: {
         type: String,
         required: true
-    }
+    },
+    votes: [
+        {
+            type: String,
+        }
+    ],
+    boycott: [
+        {
+            type: String,
+        }
+    ],
+    opinion: [
+        {
+            userId: {
+                type: String,
+                required: true,
+            },
+            text: {
+                type: String,
+                required: true
+            }
+        }
+    ]
 }, {timestamps: true}) 
 
 const Post = models?.Post || model("Post", PostSchema);

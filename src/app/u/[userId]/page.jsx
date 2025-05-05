@@ -2,6 +2,7 @@
 import { useForm } from "react-hook-form";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import UserProfilePosts from "../../../components/UserProfilePosts";
 
 const page = ({ params }) => {
   const {userId} = React.use(params);
@@ -80,6 +81,7 @@ const page = ({ params }) => {
           Submit
         </button>
       </form>
+      <UserProfilePosts></UserProfilePosts>
     </div>
   );
 };

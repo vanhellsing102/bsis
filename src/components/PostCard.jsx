@@ -6,16 +6,24 @@ import { GoCommentDiscussion } from "react-icons/go";
 import { useState } from "react";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { VscSend } from "react-icons/vsc";
+import { getAuthContext } from "@/AuthContext/AuthContextProvider";
 
 const PostCard = ({ post }) => {
   const { title, description, image, createdAt, location, userId } = post;
   const date = moment(createdAt).format("dddd YYYY");
   const [openComment, setOpenComment] = useState(false);
+  const {user} = getAuthContext();
 
   const handleSendComment = (e) =>{
     e.preventDefault();
     const comment = e.target.comment.value;
     console.log(comment)
+  }
+  const handleVote = (uid) =>{
+    console.log(`vote from ${uid}`)
+  }
+  const handleBoycott = (uid) =>{
+    console.log(`boycott from ${uid}`)
   }
   return (
     <div className="p-3 border border-slate-500 rounded-lg">
@@ -61,7 +69,7 @@ const PostCard = ({ post }) => {
           <div className="text-xl flex justify-center items-center gap-[100px] px-16">
             <div className="flex flex-col items-center">
               <p className="text-sm">32 person votes</p>
-              <button className="cursor-pointer">
+              <button onClick={() =>handleVote(user?.uid)} className="cursor-pointer">
                 <GrLike></GrLike>
               </button>
             </div>
@@ -72,7 +80,7 @@ const PostCard = ({ post }) => {
             </div>
             <div className="flex flex-col items-center">
               <p className="text-sm">32 person boycott</p>
-              <button className="cursor-pointer">
+              <button onClick={() =>handleBoycott(user?.uid)} className="cursor-pointer">
                 <GrDislike></GrDislike>
               </button>
             </div>

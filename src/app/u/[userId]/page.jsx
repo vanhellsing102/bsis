@@ -3,8 +3,11 @@ import { useForm } from "react-hook-form";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import UserProfilePosts from "../../../components/UserProfilePosts";
+import Logout from "../../../components/Logout";
+import { getAuthContext } from "@/AuthContext/AuthContextProvider";
 
 const page = ({ params }) => {
+  const {user} = getAuthContext();
   const {userId} = React.use(params);
   const {
     register,
@@ -41,7 +44,12 @@ const page = ({ params }) => {
   }, [watchImageChanged])
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      {
+        user?.uid == userId 
+        ?
+        <div>
+          <Logout></Logout>
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
           <label>Title</label>
           <input
@@ -80,8 +88,11 @@ const page = ({ params }) => {
         >
           Submit
         </button>
-      </form>
-      <UserProfilePosts></UserProfilePosts>
+          </form>
+          <UserProfilePosts></UserProfilePosts>
+        </div>:
+        <UserProfilePosts></UserProfilePosts>
+      }
     </div>
   );
 };

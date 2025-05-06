@@ -1,9 +1,10 @@
 "use client";
 import { useForm } from "react-hook-form";
 import { getAuthContext } from "@/AuthContext/AuthContextProvider";
+import { redirect } from "next/navigation";
 
 export default function LoginPage() {
-  const {loginUser} = getAuthContext();
+  const {loginUser, user} = getAuthContext();
   const {
     register,
     handleSubmit,
@@ -16,14 +17,14 @@ export default function LoginPage() {
     loginUser(email, password)
     .then(userCredential =>{
       const user = userCredential.user;
-      console.log(user)
+      // console.log(user);
     })
     .catch(error =>{
       console.log(error);
     })
-    console.log(email, password)
+    // console.log(email, password)
   };
-
+  user && redirect(`/u/${user?.uid}`);
   return (
     <div className="max-w-md mx-auto mt-10 p-6 border rounded-xl shadow-lg">
       <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>

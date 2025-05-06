@@ -20,7 +20,7 @@ const UserProfilePosts = () => {
             setLoading(false);
         })
     }, [userId])
-    console.log(userPosts);
+    // console.log(userPosts);
     return (
         <div className="mt-10">
             <h2 className="text-center text-3xl font-semibold text-slate-800">My Posts</h2>

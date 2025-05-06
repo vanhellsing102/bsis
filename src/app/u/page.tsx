@@ -11,8 +11,8 @@ const Page = () => {
     // console.log(user);
 
     return (
-        <div>
-            <Link href={'/login'}>Login</Link>
+        <div className="flex justify-end items-center">
+            <Link href={'/login'} className="bg-cyan-400 py-1 px-3 rounded-lg cursor-pointer hover:bg-cyan-500 hover:scale-[102%] transition-all duration-300 text-white font-semibold">Please Login First</Link>
         </div>
     );
 };

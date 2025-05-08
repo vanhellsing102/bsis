@@ -1,13 +1,15 @@
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
 
 const useGetAllPost = () => {
-    const [allPost, setAllPost] = useState([]);
-    useEffect( () =>{
-        axios.get('/api/get/getAllPost')
-    .then(res => setAllPost(res.data.allPost));
-    }, [])
-    return allPost;
+    const {data: allPost, isLoading} = useQuery({
+        queryKey: ['allPost'],
+        queryFn: async() =>{
+            const res = await axios.get('/api/get/getAllPost');
+            return res.data.allPost;
+        }
+    })
+    return {allPost, isLoading};
 };
 
 export default useGetAllPost;

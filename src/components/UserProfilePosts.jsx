@@ -1,43 +1,36 @@
 
 "use client"
 import { getAuthContext } from "@/AuthContext/AuthContextProvider";
-import axios from "axios";
+import useGetCurrentUserPost from "../hooks/useGetCurrentUserPost";
 import { useEffect, useState } from "react";
 import PostCard from "./PostCard";
 
 
 const UserProfilePosts = () => {
-    const [userPosts, setUserPosts] = useState([]);
-    const [loading, setLoading] = useState(false);
+    // const [userPosts, setUserPosts] = useState([]);
     const {user} = getAuthContext();
-    const userId = user?.uid;    ;
-    const [firstTime, setFirstTime] = useState(true);
-    // console.log(userId);
+    const userId = user?.uid;
+    if(!userId){
+        return;
+    }
+    const {userPosts, isLoading} = useGetCurrentUserPost(userId);
+    // console.log(userPosts);
 
-    useEffect( () =>{
-        
-
-        console.log("user Id 1",userId)
-        setLoading(true);
-        userId && axios.get(`/api/get/getUserPosts/${userId}`)
-        .then(res =>{
-            console.log("data",res);
-            setUserPosts(res.data);
-            setLoading(false);
-        })
-    }, [userId])
-    console.log("user Id 2",userId)
     return (
         <div className="mt-10">
             <h2 className="text-center text-3xl font-semibold text-slate-800">My Posts</h2>
             <div className="md:w-[70%] w-full mx-auto space-y-3">
                 {
-                    (userPosts.length != 0 || !loading) ?
-                    userPosts.map(post => <PostCard key={post?._id} post={post}></PostCard>)
-                    : 
+                    isLoading ? 
                     <p className="flex justify-center mt-16">
                         <span className="loading loading-spinner text-info"></span>
                     </p>
+                    :
+                    userPosts.length > 0 
+                    ?
+                    userPosts.map(post => <PostCard key={post?._id} post={post}></PostCard>)
+                    :
+                    <p className="text-lg text-red-600 mt-5">No post available!!!</p>
                 }
             </div>
         </div>

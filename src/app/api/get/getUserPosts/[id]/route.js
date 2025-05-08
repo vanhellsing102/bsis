@@ -5,11 +5,11 @@ import Post from "../../../../../../libs/models/post.model.js";
 export const GET = async(request, {params}) =>{
     await connectDb();
     try {
-        const {id:userId} = await params
-        // console.log("User Id : ",id);
+        const {id:userId} = await params;
+        // console.log("User Id : ",userId);
         
         // const userId = request.url.split("/").pop();
-        const posts = await Post.find({userId});
+        const posts = await Post.find({userId}).sort({createdAt: -1});
         return NextResponse.json(posts, {status: 200});
     } catch (error) {
         console.log("error =:" ,error);

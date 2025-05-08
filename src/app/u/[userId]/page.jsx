@@ -5,10 +5,12 @@ import axios from "axios";
 import UserProfilePosts from "../../../components/UserProfilePosts";
 import Logout from "../../../components/Logout";
 import { getAuthContext } from "@/AuthContext/AuthContextProvider";
+import useGetCurrentUserPost from "@/hooks/useGetCurrentUserPost";
 
 const page = ({ params }) => {
   const {user} = getAuthContext();
   const {userId} = React.use(params);
+  const {refetch} = useGetCurrentUserPost(userId);
   const {
     register,
     handleSubmit,
@@ -35,7 +37,6 @@ const page = ({ params }) => {
     fetchLocation();
   }, [])
   // console.log(location);
-
   const onSubmit = async(data) => {
     // fetchLocation();
     const title = data.title;
@@ -48,6 +49,8 @@ const page = ({ params }) => {
         location
       })
       .then(res =>{
+        refetch();
+        // isLoading();
         console.log(res.data.message);
       })
   };
@@ -64,6 +67,8 @@ const page = ({ params }) => {
     };
   }, [watchImageChanged])
   return (
+    <>
+    <title>user profile</title>
     <div>
       {
         user?.uid == userId 
@@ -115,6 +120,7 @@ const page = ({ params }) => {
         <UserProfilePosts></UserProfilePosts>
       }
     </div>
+    </>
   );
 };
 

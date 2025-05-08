@@ -57,6 +57,7 @@ const page = ({ params }) => {
     if(!imageFile) return;
     const reader = new FileReader();
     reader.readAsDataURL(imageFile);
+
     reader.onload = () =>{
       // console.log(reader.result);
       setImage(reader.result);

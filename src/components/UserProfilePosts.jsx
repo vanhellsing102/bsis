@@ -1,3 +1,5 @@
+
+"use client"
 import { getAuthContext } from "@/AuthContext/AuthContextProvider";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -9,19 +11,22 @@ const UserProfilePosts = () => {
     const [loading, setLoading] = useState(false);
     const {user} = getAuthContext();
     const userId = user?.uid;    ;
+    const [firstTime, setFirstTime] = useState(true);
     // console.log(userId);
 
     useEffect( () =>{
-        console.log(userId)
+        
+
+        console.log("user Id 1",userId)
         setLoading(true);
-        axios.get(`/api/get/getUserPosts/${userId}`)
+        userId && axios.get(`/api/get/getUserPosts/${userId}`)
         .then(res =>{
-            console.log(res.data);
+            console.log("data",res);
             setUserPosts(res.data);
             setLoading(false);
         })
     }, [userId])
-    // console.log(userPosts);
+    console.log("user Id 2",userId)
     return (
         <div className="mt-10">
             <h2 className="text-center text-3xl font-semibold text-slate-800">My Posts</h2>

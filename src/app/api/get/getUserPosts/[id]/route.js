@@ -3,11 +3,11 @@ import connectDb from "../../../../../../utils/connectDb.ts";
 import Post from "../../../../../../libs/models/post.model.js";
 
 export const GET = async(request, {params}) =>{
+    await connectDb();
     try {
-        await connectDb();
-        const userId = params.id;
-        // console.log(userId);
-        const posts = await Post.find({userId}).sort({createdAt: -1});
+        const {userId} = await params;
+        console.log(userId);
+        const posts = await Post.find({userId});
         return NextResponse.json(posts, {status: 200});
     } catch (error) {
         console.log(error);

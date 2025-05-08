@@ -8,14 +8,15 @@ const UserProfilePosts = () => {
     const [userPosts, setUserPosts] = useState([]);
     const [loading, setLoading] = useState(false);
     const {user} = getAuthContext();
-    const userId = user?.uid;
-    // console.log(user?.uid)
+    const userId = user?.uid;    ;
+    // console.log(userId);
 
     useEffect( () =>{
-        // console.log(userId)
+        console.log(userId)
         setLoading(true);
         axios.get(`/api/get/getUserPosts/${userId}`)
         .then(res =>{
+            console.log(res.data);
             setUserPosts(res.data);
             setLoading(false);
         })

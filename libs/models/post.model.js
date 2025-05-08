@@ -23,7 +23,7 @@ const PostSchema = new mongoose.Schema({
     },
     votes: [
         {
-            type: String,
+            type: String
         }
     ],
     boycott: [

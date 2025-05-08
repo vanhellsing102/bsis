@@ -5,7 +5,7 @@ import Post from "../../../../../../libs/models/post.model.js";
 export const GET = async(request, {params}) =>{
     await connectDb();
     try {
-        const {userId} = await params;
+        const {userId} = params;
         console.log(userId);
         const posts = await Post.find({userId});
         return NextResponse.json(posts, {status: 200});

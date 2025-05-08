@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
 const useGetCurrentUserPost = (userId) => {
-    console.log(userId);
+    // console.log(userId);
     const {data: userPosts, refetch,isLoading} = useQuery({
         queryKey: ["userPost", userId],
         queryFn: async() =>{

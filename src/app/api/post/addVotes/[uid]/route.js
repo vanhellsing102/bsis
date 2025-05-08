@@ -7,7 +7,7 @@ export const POST = async(request, {params}) =>{
     try {
         const {uid} = await params;
         const {postId} = await request.json();
-        console.log(uid, postId);
+        // console.log(uid, postId);
         const post = await Post.findById(postId);
         if(!post){
             return NextResponse.json({message: "Post not found"}, {status: 404});

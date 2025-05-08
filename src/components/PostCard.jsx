@@ -1,16 +1,10 @@
 import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
-import { GrLike, GrDislike } from "react-icons/gr";
-import { GoCommentDiscussion } from "react-icons/go";
-import { useState } from "react";
-import { IoCloseCircleOutline } from "react-icons/io5";
-import { VscSend } from "react-icons/vsc";
-import { getAuthContext } from "@/AuthContext/AuthContextProvider";
 import RespondArea from "../components/RespondArea";
 
 const PostCard = ({ post }) => {
-  const { title, description, image, createdAt, location, _id, userId } = post;
+  const { title, description, image, createdAt, location, _id, userId, votes } = post;
   const date = moment(createdAt).format("dddd YYYY");
 
   return (
@@ -52,7 +46,7 @@ const PostCard = ({ post }) => {
           src={image}
         ></Image>
       </div>
-      <RespondArea postId={_id}></RespondArea>
+      <RespondArea postId={_id} votes={votes}></RespondArea>
     </div>
   );
 };

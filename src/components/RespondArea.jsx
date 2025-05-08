@@ -5,12 +5,15 @@ import { GoCommentDiscussion } from "react-icons/go";
 import { GrDislike, GrLike } from "react-icons/gr";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { VscSend } from "react-icons/vsc";
+import { BiLike, BiSolidLike } from "react-icons/bi";
+import useGetVotedId from "../hooks/GetRespondData/useGetVotedId";
 
-const RespondArea = ({postId}) => {
+const RespondArea = ({postId, votes}) => {
     const [openComment, setOpenComment] = useState(false);
     const {user} = getAuthContext();
-    // console.log(postId);
-
+    const {isVoted} = useGetVotedId(postId);
+    console.log(isVoted);
+    
   const handleSendComment = (e) => {
     e.preventDefault();
     const comment = e.target.comment.value;
@@ -18,11 +21,19 @@ const RespondArea = ({postId}) => {
   };
   const handleVote = (uid) =>{
       console.log(`vote from ${uid}`);
+      isVoted 
+      ?
+      axios.post()
+      .then(res =>{
+        console.log(res.data);
+      })
+      :
       axios.post(`/api/post/addVotes/${uid}`, {postId})
       .then(res =>{
         console.log(res.data);
       })
     }
+
     const handleBoycott = (uid) =>{
       console.log(`boycott from ${uid}`)
     }
@@ -31,12 +42,14 @@ const RespondArea = ({postId}) => {
       {!openComment ? (
         <div className="text-xl flex justify-center items-center gap-[100px] px-16">
           <div className="flex flex-col items-center">
-            <p className="text-sm">32 person votes</p>
+            <p className="text-sm">{votes.length} person votes</p>
             <button
-              onClick={() => handleVote(user?.uid)}
+              onClick={() =>handleVote(user?.uid)}
               className="cursor-pointer"
             >
-              <GrLike></GrLike>
+              {
+                isVoted ? <BiSolidLike className="text-2xl"></BiSolidLike> : <BiLike className="text-2xl"></BiLike>
+              }
             </button>
           </div>
           <div>

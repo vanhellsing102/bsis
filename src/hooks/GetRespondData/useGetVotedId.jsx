@@ -10,7 +10,7 @@ const useGetVotedId = (postId) => {
     const userId = user?.uid;
     if(!userId) return;
     // console.log(userId);
-    const {data, isSuccess} = useQuery({
+    const {data, isSuccess, refetch} = useQuery({
         queryKey: ['userId', postId],
         queryFn: async() =>{
             const res = await axios.post(`/api/get/getVotedPostId/${postId}`, {userId});
@@ -23,7 +23,7 @@ const useGetVotedId = (postId) => {
         }
     }, [data, isSuccess])
     // setIsVoted(data?.status);
-    return {isVoted};
+    return {isVoted, refetch};
 };
 
 export default useGetVotedId;

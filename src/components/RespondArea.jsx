@@ -11,9 +11,9 @@ import useGetVotedId from "../hooks/GetRespondData/useGetVotedId";
 const RespondArea = ({postId, votes}) => {
     const [openComment, setOpenComment] = useState(false);
     const {user} = getAuthContext();
-    const {isVoted} = useGetVotedId(postId);
-    console.log(isVoted);
-    
+    const {isVoted, refetch} = useGetVotedId(postId);
+    // console.log(isVoted);
+
   const handleSendComment = (e) => {
     e.preventDefault();
     const comment = e.target.comment.value;
@@ -23,14 +23,16 @@ const RespondArea = ({postId, votes}) => {
       console.log(`vote from ${uid}`);
       isVoted 
       ?
-      axios.post()
+      axios.post(`/api/post/removeVotes/${uid}`, {postId})
       .then(res =>{
-        console.log(res.data);
+        console.log(res.data.message);
+        refetch();
       })
       :
       axios.post(`/api/post/addVotes/${uid}`, {postId})
       .then(res =>{
         console.log(res.data);
+        refetch();
       })
     }
 

@@ -36,9 +36,16 @@ const RespondArea = ({postId, votes, boycott}) => {
         refetch();
       })
   }
-
   const handleBoycott = (uid) =>{
     console.log(`boycott from ${uid}`);
+    isBoycott 
+    ?
+    axios.post(`/api/post/removeBoycott/${uid}`, {postId})
+    .then(res =>{
+      console.log(res.data);
+      ref();
+    })
+    :
     axios.post(`/api/post/addBoycott/${uid}`, {postId})
     .then(res =>{
       console.log(res.data);

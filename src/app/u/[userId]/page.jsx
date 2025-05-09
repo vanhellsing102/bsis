@@ -10,7 +10,7 @@ import useGetCurrentUserPost from "@/hooks/useGetCurrentUserPost";
 const page = ({ params }) => {
   const {user} = getAuthContext();
   const {userId} = React.use(params);
-  const {refetch} = useGetCurrentUserPost(userId);
+  const {refetchCurrentUserPostVoteAndBoycott} = useGetCurrentUserPost(userId);
   const {
     register,
     handleSubmit,
@@ -49,7 +49,7 @@ const page = ({ params }) => {
         location
       })
       .then(res =>{
-        refetch();
+        refetchCurrentUserPostVoteAndBoycott();
         // isLoading();
         console.log(res.data.message);
       })

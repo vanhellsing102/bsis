@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const useGetCurrentUserPost = (userId) => {
     // console.log(userId);
-    const {data: userPosts, refetch,isLoading} = useQuery({
+    const {data: userPosts, refetch: refetchCurrentUserPostVoteAndBoycott,isLoading} = useQuery({
         queryKey: ["userPost", userId],
         queryFn: async() =>{
             const res = await axios.get(`/api/get/getUserPosts/${userId}`);
@@ -11,7 +11,7 @@ const useGetCurrentUserPost = (userId) => {
         },
         enabled: !!userId
     })
-    return {userPosts, refetch, isLoading};
+    return {userPosts, refetchCurrentUserPostVoteAndBoycott, isLoading};
 };
 
 export default useGetCurrentUserPost;

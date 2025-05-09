@@ -7,12 +7,16 @@ import { VscSend } from "react-icons/vsc";
 import { BiDislike, BiLike, BiSolidDislike, BiSolidLike } from "react-icons/bi";
 import useGetVotedId from "../hooks/GetRespondData/useGetVotedId";
 import useGetBoycottedId from "../hooks/GetRespondData/useGetBoycottedId";
+import useGetAllPost from "@/hooks/useGetAllPost";
+import useGetCurrentUserPost from "@/hooks/useGetCurrentUserPost";
 
 const RespondArea = ({postId, votes, boycott}) => {
     const [openComment, setOpenComment] = useState(false);
     const {user} = getAuthContext();
-    const {isVoted, refetch, } = useGetVotedId(postId);
-    const {isBoycott, ref} = useGetBoycottedId(postId);
+    const {isVoted, refetchVote} = useGetVotedId(postId);
+    const {isBoycott, refetchBoycott} = useGetBoycottedId(postId);
+    const {refetchVotesAndBoycott} = useGetAllPost();
+    const {refetchCurrentUserPostVoteAndBoycott} = useGetCurrentUserPost();
     // console.log(isBoycott);
 
   const handleSendComment = (e) => {
@@ -27,13 +31,19 @@ const RespondArea = ({postId, votes, boycott}) => {
       axios.post(`/api/post/removeVotes/${uid}`, {postId})
       .then(res =>{
         console.log(res.data.message);
-        refetch();
+        refetchVote();
+        refetchBoycott();
+        refetchVotesAndBoycott();
+        refetchCurrentUserPostVoteAndBoycott();
       })
       :
       axios.post(`/api/post/addVotes/${uid}`, {postId})
       .then(res =>{
         console.log(res.data);
-        refetch();
+        refetchVote();
+        refetchBoycott();
+        refetchVotesAndBoycott();
+        refetchCurrentUserPostVoteAndBoycott();
       })
   }
   const handleBoycott = (uid) =>{
@@ -43,13 +53,19 @@ const RespondArea = ({postId, votes, boycott}) => {
     axios.post(`/api/post/removeBoycott/${uid}`, {postId})
     .then(res =>{
       console.log(res.data);
-      ref();
+      refetchVote();
+      refetchBoycott();
+      refetchVotesAndBoycott();
+      refetchCurrentUserPostVoteAndBoycott();
     })
     :
     axios.post(`/api/post/addBoycott/${uid}`, {postId})
     .then(res =>{
       console.log(res.data);
-      ref();
+      refetchVote();
+      refetchBoycott();
+      refetchVotesAndBoycott();
+      refetchCurrentUserPostVoteAndBoycott();
     })
   }
   return (

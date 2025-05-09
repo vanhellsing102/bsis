@@ -9,7 +9,7 @@ const useGetBoycottedId = (postId) => {
     const uid = user?.uid;
     if(!uid) return;
     // console.log(uid);
-    const {data, isSuccess, refetch: ref} = useQuery({
+    const {data, isSuccess, refetch: refetchBoycott} = useQuery({
         queryKey: ["postId", postId],
         queryFn: async() =>{
             const res = await axios.post(`/api/get/getBoycottedPostId/${postId}`, {uid});
@@ -21,7 +21,7 @@ const useGetBoycottedId = (postId) => {
             setIsBoycott(data.message);
         }
     }, [data, isSuccess])
-    return {isBoycott, ref};
+    return {isBoycott, refetchBoycott};
 };
 
 export default useGetBoycottedId;

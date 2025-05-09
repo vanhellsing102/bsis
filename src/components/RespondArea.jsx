@@ -11,8 +11,8 @@ import useGetBoycottedId from "../hooks/GetRespondData/useGetBoycottedId";
 const RespondArea = ({postId, votes, boycott}) => {
     const [openComment, setOpenComment] = useState(false);
     const {user} = getAuthContext();
-    const {isVoted, refetch} = useGetVotedId(postId);
-    const {isBoycott} = useGetBoycottedId(postId);
+    const {isVoted, refetch, } = useGetVotedId(postId);
+    const {isBoycott, ref} = useGetBoycottedId(postId);
     // console.log(isBoycott);
 
   const handleSendComment = (e) => {
@@ -42,6 +42,7 @@ const RespondArea = ({postId, votes, boycott}) => {
     axios.post(`/api/post/addBoycott/${uid}`, {postId})
     .then(res =>{
       console.log(res.data);
+      ref();
     })
   }
   return (

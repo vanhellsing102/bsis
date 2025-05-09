@@ -15,6 +15,14 @@ export const POST = async(request, {params}) =>{
         if(post.votes.includes(uid)){
             return NextResponse.json({message: "Alreay voted"}, {status: 409});
         }
+        if(post.boycott.includes(uid)){
+            post.votes.push(uid);
+            post.save();
+            await post.updateOne(
+                {$pull: {boycott: uid}}
+            )
+            return NextResponse.json({message: "votes add and boycott removed"}, {status: 200});
+        }
         post.votes.push(uid);
         post.save();
         return NextResponse.json({message: "vote added"}, {status: 200});

@@ -4,7 +4,7 @@ import Link from "next/link";
 import RespondArea from "../components/RespondArea";
 
 const PostCard = ({ post }) => {
-  const { title, description, image, createdAt, location, _id, userId, votes } = post;
+  const { title, description, image, createdAt, location, _id, userId, votes, boycott } = post;
   const date = moment(createdAt).format("dddd YYYY");
 
   return (
@@ -46,7 +46,7 @@ const PostCard = ({ post }) => {
           src={image}
         ></Image>
       </div>
-      <RespondArea postId={_id} votes={votes}></RespondArea>
+      <RespondArea postId={_id} votes={votes} boycott={boycott}></RespondArea>
     </div>
   );
 };

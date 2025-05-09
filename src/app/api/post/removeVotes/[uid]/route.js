@@ -7,7 +7,7 @@ export const POST = async(request, {params}) =>{
     try {
         const {uid} = await params;
         const {postId} = await request.json();
-        console.log(uid, postId);
+        // console.log(uid, postId);
         await Post.updateOne(
             {_id: postId},
             {$pull: {votes: uid}}

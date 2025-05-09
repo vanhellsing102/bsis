@@ -2,17 +2,18 @@ import { getAuthContext } from "@/AuthContext/AuthContextProvider";
 import axios from "axios";
 import React, { useState } from "react";
 import { GoCommentDiscussion } from "react-icons/go";
-import { GrDislike, GrLike } from "react-icons/gr";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { VscSend } from "react-icons/vsc";
-import { BiLike, BiSolidLike } from "react-icons/bi";
+import { BiDislike, BiLike, BiSolidDislike, BiSolidLike } from "react-icons/bi";
 import useGetVotedId from "../hooks/GetRespondData/useGetVotedId";
+import useGetBoycottedId from "../hooks/GetRespondData/useGetBoycottedId";
 
-const RespondArea = ({postId, votes}) => {
+const RespondArea = ({postId, votes, boycott}) => {
     const [openComment, setOpenComment] = useState(false);
     const {user} = getAuthContext();
     const {isVoted, refetch} = useGetVotedId(postId);
-    // console.log(isVoted);
+    const {isBoycott} = useGetBoycottedId(postId);
+    // console.log(isBoycott);
 
   const handleSendComment = (e) => {
     e.preventDefault();
@@ -20,7 +21,7 @@ const RespondArea = ({postId, votes}) => {
     // console.log(comment);
   };
   const handleVote = (uid) =>{
-      console.log(`vote from ${uid}`);
+      // console.log(`vote from ${uid}`);
       isVoted 
       ?
       axios.post(`/api/post/removeVotes/${uid}`, {postId})
@@ -34,11 +35,15 @@ const RespondArea = ({postId, votes}) => {
         console.log(res.data);
         refetch();
       })
-    }
+  }
 
-    const handleBoycott = (uid) =>{
-      console.log(`boycott from ${uid}`)
-    }
+  const handleBoycott = (uid) =>{
+    console.log(`boycott from ${uid}`);
+    axios.post(`/api/post/addBoycott/${uid}`, {postId})
+    .then(res =>{
+      console.log(res.data);
+    })
+  }
   return (
     <div className="mt-3">
       {!openComment ? (
@@ -63,12 +68,14 @@ const RespondArea = ({postId, votes}) => {
             </button>
           </div>
           <div className="flex flex-col items-center">
-            <p className="text-sm">32 person boycott</p>
+            <p className="text-sm">{boycott.length} person boycott</p>
             <button
               onClick={() => handleBoycott(user?.uid)}
               className="cursor-pointer"
             >
-              <GrDislike></GrDislike>
+              {
+                isBoycott ? <BiSolidDislike className="text-2xl"></BiSolidDislike> : <BiDislike className="text-2xl"></BiDislike>
+              }
             </button>
           </div>
         </div>

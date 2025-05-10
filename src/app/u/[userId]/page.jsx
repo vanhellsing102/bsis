@@ -6,6 +6,7 @@ import UserProfilePosts from "../../../components/UserProfilePosts";
 import Logout from "../../../components/Logout";
 import { getAuthContext } from "@/AuthContext/AuthContextProvider";
 import useGetCurrentUserPost from "@/hooks/useGetCurrentUserPost";
+import useGetCurrentLocation from "../../../hooks/useGetCurrentLocation";
 
 const page = ({ params }) => {
   const {user} = getAuthContext();
@@ -19,26 +20,27 @@ const page = ({ params }) => {
     watch
   } = useForm();
   const [image, setImage] = useState(null);
-  const [location, setLocation] = useState("");
-  const fetchLocation = () =>{
-    navigator.geolocation.getCurrentPosition( async(position) =>{
-      const lat = position.coords.latitude;
-      const lon = position.coords.longitude;
-      const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
-      const data = await res.json();
-      const place = data?.address?.city || data?.address?.town || data?.address?.state || data?.address?.country || "Unknown";
-      setLocation(place);
-    }, (error) =>{
-      console.log(`Location not found ${error}`);
-      setLocation("Unknown");
-    })
-  }
-  useEffect( () =>{
-    fetchLocation();
-  }, [])
+  const {location} = useGetCurrentLocation();
+  // const [location, setLocation] = useState("");
+  // const fetchLocation = () =>{
+  //   navigator.geolocation.getCurrentPosition( async(position) =>{
+  //     const lat = position.coords.latitude;
+  //     const lon = position.coords.longitude;
+  //     const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+  //     const data = await res.json();
+  //     const place = data?.address?.city || data?.address?.town || data?.address?.state || data?.address?.country || "Unknown";
+  //     setLocation(place);
+  //   }, (error) =>{
+  //     console.log(`Location not found ${error}`);
+  //     setLocation("Unknown");
+  //   })
+  // }
+  // useEffect( () =>{
+  //   fetchLocation();
+  // }, [])
   // console.log(location);
   const onSubmit = async(data) => {
-    // fetchLocation();
+    if(!location) return;
     const title = data.title;
     const description = data.description;
     await axios.post('/api/createPost', {

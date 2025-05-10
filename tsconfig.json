@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/register/page.jsx", "src/AuthContext/AuthContextProvider.jsx", "libs/models/user.model.js", "src/app/u/[userId]/page.jsx", "src/app/page.jsx", "src/components/PostCard.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/register/page.jsx", "src/AuthContext/AuthContextProvider.jsx", "libs/models/user.model.js", "src/app/u/[userId]/page.jsx", "src/app/page.jsx", "src/components/PostCard.jsx", "src/app/top/page.jsx"],
   "exclude": ["node_modules"]
 }

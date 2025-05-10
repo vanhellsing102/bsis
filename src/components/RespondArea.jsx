@@ -9,23 +9,41 @@ import useGetVotedId from "../hooks/GetRespondData/useGetVotedId";
 import useGetBoycottedId from "../hooks/GetRespondData/useGetBoycottedId";
 import useGetAllPost from "@/hooks/useGetAllPost";
 import useGetCurrentUserPost from "@/hooks/useGetCurrentUserPost";
+import Opinion from "./Opinion";
 
-const RespondArea = ({postId, votes, boycott}) => {
+const RespondArea = ({postId, votes, boycott, opinion}) => {
     const [openComment, setOpenComment] = useState(false);
     const {user} = getAuthContext();
     const {isVoted, refetchVote} = useGetVotedId(postId);
     const {isBoycott, refetchBoycott} = useGetBoycottedId(postId);
     const {refetchVotesAndBoycott} = useGetAllPost();
     const {refetchCurrentUserPostVoteAndBoycott} = useGetCurrentUserPost();
+    const [loading, setLoading] = useState(false);      
+    const [loadingBoycott, setLoadingBoycott] = useState(false);      
     // console.log(isBoycott);
 
   const handleSendComment = (e) => {
     e.preventDefault();
-    const comment = e.target.comment.value;
-    // console.log(comment);
+    setLoading(true);
+    const userId = user?.uid;
+    if(!userId) return;
+    const text = e.target.comment.value;
+    const newComment = {
+      userId, postId, text
+    }
+    axios.post('/api/post/addComment', newComment)
+    .then(res =>{
+      console.log(res.data);
+      refetchVotesAndBoycott();
+      refetchCurrentUserPostVoteAndBoycott();
+      e.target.reset();
+      setLoading(false);
+    })
+    console.log(text);
   };
   const handleVote = (uid) =>{
       // console.log(`vote from ${uid}`);
+      setLoading(true);
       isVoted 
       ?
       axios.post(`/api/post/removeVotes/${uid}`, {postId})
@@ -35,6 +53,7 @@ const RespondArea = ({postId, votes, boycott}) => {
         refetchBoycott();
         refetchVotesAndBoycott();
         refetchCurrentUserPostVoteAndBoycott();
+        setLoading(false);
       })
       :
       axios.post(`/api/post/addVotes/${uid}`, {postId})
@@ -44,10 +63,12 @@ const RespondArea = ({postId, votes, boycott}) => {
         refetchBoycott();
         refetchVotesAndBoycott();
         refetchCurrentUserPostVoteAndBoycott();
+        setLoading(false);
       })
   }
   const handleBoycott = (uid) =>{
-    console.log(`boycott from ${uid}`);
+    // console.log(`boycott from ${uid}`);
+    setLoadingBoycott(true);
     isBoycott 
     ?
     axios.post(`/api/post/removeBoycott/${uid}`, {postId})
@@ -57,6 +78,7 @@ const RespondArea = ({postId, votes, boycott}) => {
       refetchBoycott();
       refetchVotesAndBoycott();
       refetchCurrentUserPostVoteAndBoycott();
+      setLoadingBoycott(false);
     })
     :
     axios.post(`/api/post/addBoycott/${uid}`, {postId})
@@ -66,6 +88,7 @@ const RespondArea = ({postId, votes, boycott}) => {
       refetchBoycott();
       refetchVotesAndBoycott();
       refetchCurrentUserPostVoteAndBoycott();
+      setLoadingBoycott(false);
     })
   }
   return (
@@ -79,6 +102,7 @@ const RespondArea = ({postId, votes, boycott}) => {
               className="cursor-pointer"
             >
               {
+                loading ? <span className="loading loading-ball loading-xs"></span> :
                 isVoted ? <BiSolidLike className="text-2xl"></BiSolidLike> : <BiLike className="text-2xl"></BiLike>
               }
             </button>
@@ -98,13 +122,14 @@ const RespondArea = ({postId, votes, boycott}) => {
               className="cursor-pointer"
             >
               {
+                loadingBoycott ? <span className="loading loading-ball loading-xs"></span> :
                 isBoycott ? <BiSolidDislike className="text-2xl"></BiSolidDislike> : <BiDislike className="text-2xl"></BiDislike>
               }
             </button>
           </div>
         </div>
       ) : (
-        <div className="min-h-[200px] border border-slate-400 rounded-xl w-full p-2 bg-slate-100">
+        <div className="h-[200px] overflow-y-scroll border border-slate-400 rounded-xl w-full p-2 bg-slate-100">
           <div className="flex w-full justify-end">
             <button
               onClick={() => setOpenComment(false)}
@@ -123,15 +148,24 @@ const RespondArea = ({postId, votes, boycott}) => {
                 placeholder="write your opinion..."
                 name="comment"
                 className="appearance-none outline-none border border-blue-500 w-full rounded-sm  px-5 py-1 text-sm"
+                required
               />
               <button
                 type="submit"
                 className="absolute inset-y-0 right-2 cursor-pointer hover:text-[17px] text-blue-600"
               >
-                <VscSend></VscSend>
+                {
+                  loading ? <span className="loading loading-spinner text-info loading-sm"></span> : <VscSend></VscSend>
+                }
               </button>
             </form>
           </div>
+          <div className="mt-3 space-y-2">
+            {
+              opinion.length > 0 &&
+              [...opinion].reverse().map(opi =><Opinion key={opi?._id} opi={opi}></Opinion>)
+            }
+          </div>         
         </div>
       )}
     </div>

@@ -2,7 +2,6 @@
 "use client"
 import { getAuthContext } from "@/AuthContext/AuthContextProvider";
 import useGetCurrentUserPost from "../hooks/useGetCurrentUserPost";
-import { useEffect, useState } from "react";
 import PostCard from "./PostCard";
 
 
@@ -18,7 +17,7 @@ const UserProfilePosts = () => {
 
     return (
         <div className="mt-10">
-            <h2 className="text-center text-3xl font-semibold text-slate-800">My Posts</h2>
+            <h2 className="text-center text-3xl font-semibold text-slate-800">Your Posts</h2>
             <div className="md:w-[70%] w-full mx-auto space-y-3">
                 {
                     isLoading ? 

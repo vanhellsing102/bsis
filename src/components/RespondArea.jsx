@@ -25,11 +25,14 @@ const RespondArea = ({postId, votes, boycott, opinion}) => {
   const handleSendComment = (e) => {
     e.preventDefault();
     setLoading(true);
+    const userName = user?.displayName;
+    if(!userName) return;
+    // console.log(userName)
     const userId = user?.uid;
     if(!userId) return;
     const text = e.target.comment.value;
     const newComment = {
-      userId, postId, text
+      userId, postId, text, userName
     }
     axios.post('/api/post/addComment', newComment)
     .then(res =>{

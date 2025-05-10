@@ -1,9 +1,11 @@
 "use client";
 import { getAuthContext } from "@/AuthContext/AuthContextProvider";
+import Link from "next/link";
+import { redirect } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 const Register = () => {
-  const {createUser} = getAuthContext();
+  const {createUser, updateProfileName, user} = getAuthContext();
 
   const {
     register,
@@ -25,11 +27,15 @@ const Register = () => {
     .then(userCredential =>{
       const user = userCredential.user;
       console.log(user);
+      updateProfileName(name)
+      .then(() =>console.log("updated name"))
+      .catch(error=> console.log(error));
     })
     .catch(error =>{
       console.log(error);
     })
   };
+  user && redirect(`/u/${user?.uid}`);
   return (
     <div className="max-w-md mx-auto mt-10 p-6 border rounded-xl shadow-lg">
       <h2 className="text-2xl font-bold mb-4 text-center">Register</h2>
@@ -96,6 +102,7 @@ const Register = () => {
           Register
         </button>
       </form>
+      <p className="mt-1">Don't have an account? <Link href={"/login"} className="text-red-400">Login</Link></p>
     </div>
   );
 };

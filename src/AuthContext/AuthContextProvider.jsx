@@ -1,6 +1,6 @@
 "use client";
 import { createContext, useContext, useEffect, useState } from "react";
-import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
 import app from "@/firebase/firebase.config";
 
 const auth = getAuth(app);
@@ -25,6 +25,11 @@ const AuthContextProvider = ({children}) => {
     const logoutUser = () =>{
         return signOut(auth);
     }
+    const updateProfileName = (name) =>{
+        return updateProfile(auth.currentUser, {
+            displayName: name
+        })
+    }
     useEffect(() =>{
         const usSubscribe = onAuthStateChanged(auth, (currentUser) =>{
             setLoading(false);
@@ -40,7 +45,8 @@ const AuthContextProvider = ({children}) => {
         user,
         createUser,
         loginUser,
-        logoutUser
+        logoutUser,
+        updateProfileName
     }
     return (
         <AuthContext.Provider value={authInfo}>

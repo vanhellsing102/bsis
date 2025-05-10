@@ -2,10 +2,12 @@ import moment from "moment";
 import Image from "next/image";
 import Link from "next/link";
 import RespondArea from "../components/RespondArea";
+import { getAuthContext } from "@/AuthContext/AuthContextProvider";
 
 const PostCard = ({ post }) => {
   const { title, description, image, createdAt, location, _id, userId, votes, boycott, opinion } = post;
   const date = moment(createdAt).format("dddd YYYY");
+  const {user} = getAuthContext();
 
   return (
     <div className="p-3 border border-slate-500 rounded-lg">
@@ -22,7 +24,7 @@ const PostCard = ({ post }) => {
             href={`/u/${userId}`}
             className="hover:underline underline-offset-2"
           >
-            <h3 className="text-[17px] font-medium text-slate-800">Md Murad</h3>
+            <h3 className="text-[17px] font-medium text-slate-800">{user?.displayName}</h3>
           </Link>
           <p className="text-sm text-slate-500">
             <span>{date}</span>,

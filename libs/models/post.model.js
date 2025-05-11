@@ -42,7 +42,8 @@ const PostSchema = new mongoose.Schema({
                 required: true
             },
             userName: {
-                type: String
+                type: String,
+                required: true
             },
             createdAt: {
                 type: Date,

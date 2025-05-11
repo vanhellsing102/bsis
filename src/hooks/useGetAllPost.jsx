@@ -7,7 +7,7 @@ const useGetAllPost = () => {
     // const {location} = useGetCurrentLocation();
     // console.log(location);
     const {data: allPost = [], isLoading, refetch: refetchVotesAndBoycott} = useQuery({
-        queryKey: ['location', location],
+        queryKey: ['allPost'],
         queryFn: async() =>{
             // if(!location) return [];
             // console.log(location)

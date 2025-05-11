@@ -4,7 +4,7 @@ import React from 'react';
 
 const Opinion = ({opi}) => {
     const {text, userId, userName} = opi;
-    console.log(userName)
+    // console.log(userName);
     return (
         <div className='flex items-center gap-3'>
             <Image className='rounded-full' width={35} height={35} src={"/images/postcard/download.png"} alt='profile pic'></Image>
